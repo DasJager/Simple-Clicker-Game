@@ -18,6 +18,13 @@
     guiElement.style.position = 'absolute';
     guiElement.style.zIndex = '1000';
     guiElement.style.cursor = 'move';
+    guiElement.style.padding = '10px';
+    guiElement.style.border = '2px solid black';
+    guiElement.style.backgroundColor = 'white';
+
+    // Create container for buttons to prevent them from being dragged
+    const buttonContainer = document.createElement('div');
+    guiElement.appendChild(buttonContainer);
 
     // Drag-and-drop functionality
     function dragStart(e) {
@@ -57,6 +64,7 @@
             }
         }, 500);
     };
+    buttonContainer.appendChild(startBtn);
 
     // Create Stop Clicking button
     const stopBtn = document.createElement('button');
@@ -64,10 +72,7 @@
     stopBtn.onclick = function() {
         clearInterval(intervalID);
     };
-
-    // Append buttons to the GUI container
-    guiElement.appendChild(startBtn);
-    guiElement.appendChild(stopBtn);
+    buttonContainer.appendChild(stopBtn);
 
     // Append the GUI container to the body
     document.body.appendChild(guiElement);
