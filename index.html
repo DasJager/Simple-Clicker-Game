@@ -37,16 +37,21 @@
 <button class="btn" onclick="buyAutoMiner(4, 1000)">Buy Auto Miner 4 (1000 points) - 0.001 points/sec</button>
 
 
+<h2>Settings</h2>
+<button class="btn" onclick="resetAll()">Reset All</button>
+
+
 
 
 <script>
-    let points = 0;
-    let autoMinerRate = 0;
-    let pointsPerClick = 0.11;
+    let points = parseFloat(localStorage.getItem('points') || 0);
+    let autoMinerRate = parseFloat(localStorage.getItem('autoMinerRate') || 0);
+    let pointsPerClick = parseFloat(localStorage.getItem('pointsPerClick') || 0.11);
     const clickDelay = 500;
     function earnPoint() {
         points += pointsPerClick;
         updateDisplay();
+        saveGameData();
         
         // Disable the button and re-enable it after a delay
         const btn = document.getElementById('clickButton');
@@ -67,6 +72,7 @@ function buyAutoMiner(minerNumber, cost) {
     } else {
         alert(`You need more points to buy Auto Miner ${minerNumber}!`);
     }
+    saveGameData();
 }
 
 // Update points using auto miner rate every second
@@ -86,12 +92,29 @@ setInterval(() => {
         } else {
             alert(`You need more points to buy Upgrade ${upgradeNumber}!`);
         }
+        saveGameData();
     }
-
+    function saveGameData() {
+        localStorage.setItem('points', points.toString());
+        localStorage.setItem('autoMinerRate', autoMinerRate.toString());
+        localStorage.setItem('pointsPerClick', pointsPerClick.toString());
+    }
     function updateDisplay() {
         document.getElementById('points').textContent = points;
         document.getElementById('pointsPerClick').textContent = pointsPerClick;
     }
+        // Initial call to load the display when the page is first loaded
+        updateDisplay();
+        function resetAll() {
+    points = 0;
+    pointsPerClick = 0.11;
+    autoMinerRate = 0; // Stops the auto miner by setting its rate to 0
+    
+    updateDisplay();
+    saveGameData();
+    
+    alert("Everything has been reset!");
+}
 </script>
 
 </body>
