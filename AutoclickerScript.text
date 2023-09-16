@@ -13,6 +13,39 @@
 
     let intervalID;
 
+    // Create the GUI container
+    const guiElement = document.createElement('div');
+    guiElement.style.position = 'absolute';
+    guiElement.style.zIndex = '1000';
+    guiElement.style.cursor = 'move';
+
+    // Drag-and-drop functionality
+    function dragStart(e) {
+        const initialX = e.clientX;
+        const initialY = e.clientY;
+        const initialTop = parseInt(window.getComputedStyle(guiElement).top);
+        const initialLeft = parseInt(window.getComputedStyle(guiElement).left);
+
+        function drag(e) {
+            const currentX = e.clientX;
+            const currentY = e.clientY;
+            const offsetX = currentX - initialX;
+            const offsetY = currentY - initialY;
+
+            guiElement.style.top = `${initialTop + offsetY}px`;
+            guiElement.style.left = `${initialLeft + offsetX}px`;
+        }
+
+        function dragEnd() {
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', dragEnd);
+        }
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+    }
+    guiElement.addEventListener('mousedown', dragStart);
+
     // Create Start Clicking button
     const startBtn = document.createElement('button');
     startBtn.innerHTML = 'Start Clicking';
@@ -32,8 +65,11 @@
         clearInterval(intervalID);
     };
 
-    // Append buttons to the body (or you can choose another place on the webpage)
-    document.body.appendChild(startBtn);
-    document.body.appendChild(stopBtn);
+    // Append buttons to the GUI container
+    guiElement.appendChild(startBtn);
+    guiElement.appendChild(stopBtn);
+
+    // Append the GUI container to the body
+    document.body.appendChild(guiElement);
 
 })();
