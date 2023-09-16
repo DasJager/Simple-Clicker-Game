@@ -1,0 +1,39 @@
+// ==UserScript==
+// @name         Auto Clicker for Click Button
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Clicks the button automatically with a start/stop UI
+// @author       ChatGPT
+// @match        *://*/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    let intervalID;
+
+    // Create Start Clicking button
+    const startBtn = document.createElement('button');
+    startBtn.innerHTML = 'Start Clicking';
+    startBtn.onclick = function() {
+        const targetButton = document.getElementById('clickButton');
+        intervalID = setInterval(() => {
+            if (targetButton) {
+                targetButton.click();
+            }
+        }, 500);
+    };
+
+    // Create Stop Clicking button
+    const stopBtn = document.createElement('button');
+    stopBtn.innerHTML = 'Stop Clicking';
+    stopBtn.onclick = function() {
+        clearInterval(intervalID);
+    };
+
+    // Append buttons to the body (or you can choose another place on the webpage)
+    document.body.appendChild(startBtn);
+    document.body.appendChild(stopBtn);
+
+})();
