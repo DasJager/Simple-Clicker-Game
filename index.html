@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Clicker Game</title>
+    <style>
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Simple Clicker Game</h1>
+<button class="btn" id="clickButton" onclick="earnPoint()">Click me for points!</button>
+<p>Points per click: <span id="pointsPerClick">0.11</span></p>
+<p>Points: <span id="points">0</span></p>
+
+<h2>Upgrades</h2>
+<button class="btn" onclick="buyUpgrade(1, 10)">Buy Upgrade 1 (10 points) - +0.1 point/click</button>
+<button class="btn" onclick="buyUpgrade(2, 25)">Buy Upgrade 2 (25 points) - +0.2 points/click</button>
+<button class="btn" onclick="buyUpgrade(3, 50)">Buy Upgrade 3 (50 points) - +0.4 points/click</button>
+<button class="btn" onclick="buyUpgrade(4, 200)">Buy Upgrade 4 (200 points) - +0.11 points/click</button>
+<h2>Auto Miners</h2>
+<button class="btn" onclick="buyAutoMiner(1, 300)">Buy Auto Miner 1 (300 points) - 0.0001 points/sec</button>
+<button class="btn" onclick="buyAutoMiner(2, 400)">Buy Auto Miner 2 (400 points) - 0.0002 points/sec</button>
+<button class="btn" onclick="buyAutoMiner(3, 500)">Buy Auto Miner 3 (500 points) - 0.0005 points/sec</button>
+<button class="btn" onclick="buyAutoMiner(4, 1000)">Buy Auto Miner 4 (1000 points) - 0.001 points/sec</button>
+
+
+
+
+<script>
+    let points = 0;
+    let autoMinerRate = 0;
+    let pointsPerClick = 0.11;
+    const clickDelay = 500;
+    function earnPoint() {
+        points += pointsPerClick;
+        updateDisplay();
+        
+        // Disable the button and re-enable it after a delay
+        const btn = document.getElementById('clickButton');
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.disabled = false;
+        }, clickDelay);
+    }
+
+function buyAutoMiner(minerNumber, cost) {
+    if(points >= cost) {
+        points -= cost;
+        if (minerNumber === 1) autoMinerRate += 0.0001;
+        else if (minerNumber === 2) autoMinerRate += 0.0002;
+        else if (minerNumber === 3) autoMinerRate += 0.0005;
+        else if (minerNumber === 4) autoMinerRate += 0.001;
+        updateDisplay();
+    } else {
+        alert(`You need more points to buy Auto Miner ${minerNumber}!`);
+    }
+}
+
+// Update points using auto miner rate every second
+setInterval(() => {
+    points += autoMinerRate;
+    updateDisplay();
+}, 1000);
+
+    function buyUpgrade(upgradeNumber, cost) {
+        if(points >= cost) {
+            points -= cost;
+            if (upgradeNumber === 1) pointsPerClick += 0.1;
+            else if (upgradeNumber === 2) pointsPerClick += 0.2;
+            else if (upgradeNumber === 3) pointsPerClick += 0.4;
+            else if (upgradeNumber === 4) pointsPerClick += 0.11;
+            updateDisplay();
+        } else {
+            alert(`You need more points to buy Upgrade ${upgradeNumber}!`);
+        }
+    }
+
+    function updateDisplay() {
+        document.getElementById('points').textContent = points;
+        document.getElementById('pointsPerClick').textContent = pointsPerClick;
+    }
+</script>
+
+</body>
+</html>
