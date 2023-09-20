@@ -60,6 +60,51 @@
             <button onclick="closeModal()">Close</button>
         </div>
     </div>
+    <div id="buyUpgradeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+            <h2>Upgrade Cost</h2>
+            <p id="buyUpgradeMessage"></p>
+            <button onclick="closebuyUpgradeModal()">Close</button>
+        </div>
+    </div>
+
+    <div id="buyAutoMinerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+            <h2>Auto Miner Cost</h2>
+            <p id="buyAutoMinerMessage"></p>
+            <button onclick="closeAutoMinerModal()">Close</button>
+        </div>
+    </div>
+
+
+    <div id="ResetAllModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+            <h2>rest all </h2>
+            <p id="ResetAllMessage"></p>
+            <button onclick="closeResetAllModal()">Close</button>
+        </div>
+    </div>
+
+    <div id="ConfirmResetModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+            <h2>Are you sure?</h2>
+            <p>Are you sure you want to reset all game data?</p>
+            <button onclick="actuallyResetAll()">Yes, Reset</button>
+            <button onclick="closeConfirmResetModal()">Cancel</button>
+        </div>
+    </div>
+    
+
+    <div id="DejaModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+            <h2>Deja Vu</h2>
+            <p id="DejaMessage"></p>
+            <button onclick="closeDejaModal()">Close</button>
+        </div>
+    </div>
+
+
+
 
     <h1>Simple Clicker Game</h1>
 
@@ -115,6 +160,12 @@
         }, clickDelay);
     }
 
+// Update points using auto miner rate every second
+setInterval(() => {
+    points += autoMinerRate;
+    updateDisplay();
+}, 1000);
+
 function buyAutoMiner(minerNumber, cost) {
     if(points >= cost) {
         points -= cost;
@@ -124,18 +175,10 @@ function buyAutoMiner(minerNumber, cost) {
         else if (minerNumber === 4) autoMinerRate += 0.001;
         updateDisplay();
     } else {
-        alert(`You need more points to buy Auto Miner ${minerNumber}!`);
+        showbuyAutoMinerModal(`You need more points to buy Auto Miner ${minerNumber}!`);
     }
     saveGameData();
 }
-
-
-
-// Update points using auto miner rate every second
-setInterval(() => {
-    points += autoMinerRate;
-    updateDisplay();
-}, 1000);
 
     function buyUpgrade(upgradeNumber, cost) {
         if(points >= cost) {
@@ -146,7 +189,8 @@ setInterval(() => {
             else if (upgradeNumber === 4) pointsPerClick += 0.11;
             updateDisplay();
         } else {
-            alert(`You need more points to buy Upgrade ${upgradeNumber}!`);
+            showbuyUpgradeModal(`You need more points to buy Upgrade ${upgradeNumber}!`);
+    
         }
         saveGameData();
     }
@@ -186,6 +230,46 @@ function showModal(message) {
     document.getElementById("offlineEarningsModal").style.display = "block";
 }
 
+function closebuyUpgradeModal() {
+    document.getElementById("buyUpgradeModal").style.display = "none";
+}
+function showbuyUpgradeModal(message) {
+    document.getElementById("buyUpgradeMessage").textContent = message;
+    document.getElementById("buyUpgradeModal").style.display = "block";
+}
+
+function closeAutoMinerModal() {
+    document.getElementById("buyAutoMinerModal").style.display = "none";
+}
+function showbuyAutoMinerModal(message) {
+    document.getElementById("buyAutoMinerMessage").textContent = message;
+    document.getElementById("buyAutoMinerModal").style.display = "block";
+}
+
+
+function closeResetAllModal() {
+    document.getElementById("ResetAllModal").style.display = "none";
+}
+function showResetAllModal(message) {
+    document.getElementById("ResetAllMessage").textContent = message;
+    document.getElementById("ResetAllModal").style.display = "block";
+}
+
+function closeDejaModal() {
+    document.getElementById("DejaModal").style.display = "none";
+}
+function ShowDejaModal(message) {
+    document.getElementById("DejaMessage").textContent = message;
+    document.getElementById("DejaModal").style.display = "block";
+}
+
+function showConfirmResetModal() {
+    document.getElementById("ConfirmResetModal").style.display = "block";
+}
+
+function closeConfirmResetModal() {
+    document.getElementById("ConfirmResetModal").style.display = "none";
+}
 
     // Save game data periodically
     setInterval(saveGameData, 10 * 1000); // every 10 seconds
@@ -206,19 +290,13 @@ document.getElementById('clickButton').addEventListener('click', function() {
     }, 200); // This duration should match the animation duration specified in the CSS
 });
 
-
-
-        // Initial call to load the display and check offline earnings when the page is first loaded
-        updateDisplay();
-
-        function resetAll() {
+function actuallyResetAll() {
+    // Your actual reset code
     points = 0;
     pointsPerClick = 0.11;
     autoMinerRate = 0;
     updateDisplay();
     saveGameData();
-
-
 
     // Increment the reset counter
     resetCount += 1;
@@ -226,11 +304,21 @@ document.getElementById('clickButton').addEventListener('click', function() {
 
     // Check for the Deja Vu achievement
     if (resetCount === 5) {
-        alert('Achievement Unlocked: Deja Vu - You have reset the game five times!');
+        ShowDejaModal('Achievement Unlocked: Deja Vu - You have reset the game five times!');
     } else {
-        alert("Everything has been reset!");
+        showResetAllModal("Everything has been reset!");
     }
+    
+    closeConfirmResetModal(); // Close the confirmation modal
 }
+
+        // Initial call to load the display and check offline earnings when the page is first loaded
+        updateDisplay();
+
+        function resetAll() {
+    showConfirmResetModal();
+}
+
 </script>
 
 </body>
