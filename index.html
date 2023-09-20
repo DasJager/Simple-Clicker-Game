@@ -8,7 +8,9 @@
     <style>
         .btn {
             padding: 10px 20px;
+            border-radius: 20px;
             margin: 10px;
+            background: yellow;
             display: inline-block;
         }
         
@@ -20,10 +22,32 @@
         }
         
         section {
-            margin-bottom: 20px;
-            border-bottom: 2px solid #fff;
-            padding-bottom: 10px;
-        }
+    margin-bottom: 20px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
+    display: flex; /* Use Flexbox for layout */
+    justify-content: space-between; /* Put elements at each end of the container */
+}
+#ResetButton{
+    padding: 10px 20px;
+    background: crimson;
+    border-radius: 20px;
+    margin: 10px;
+    display: inline-block;
+
+}
+#submitHighScoreBtn{
+    padding: 10px 20px;
+    background: greenyellow;
+    border-radius: 20px;
+    margin: 10px;
+    display: inline-block;
+
+}
+#clickButton.clicked {
+    box-shadow: 0 0 20px 10px rgba(255, 223, 0, 0.7); /* Adjust the glow color and size as needed */
+    transition: box-shadow 0.3s ease-in-out; /* Add a smooth transition effect */
+}
 
         #clickButton {
             background: none;
@@ -35,6 +59,72 @@
             height: 200px; /* or whatever height you'd like */
             cursor: url('pickaxe32.png'), auto;
         }
+
+        /* Additional CSS for the "clickButton" and "highScores" divs */
+.clickButtonInfo {
+    flex: 1; /* Expand to fill available space */
+}
+
+.highScores {
+    flex: 1; /* Expand to fill available space */
+    margin-left: 20px; /* Add some space between the two divs */
+}
+#modalPopupUpgrade {
+    width: px !important;
+    margin: 15% auto !important;
+    padding: 20px !important;
+    background-color: rgba(255, 223, 0, 0.7) !important;
+    color: #000 !important;
+}
+#modalPopupAutoUpgrade {
+    width: px !important;
+    margin: 15% auto !important;
+    padding: 20px !important;
+    background-color: rgba(255, 223, 0, 0.7) !important;
+    color: #000 !important;
+}
+#closebuyUpgradeModal {
+    width: 270px !important;
+    margin: 15% auto !important;
+    padding: 32px !important;
+    border-radius: 25px;
+    background-color: rgb(255 127 0) !important;
+    color: #000 !important;
+}
+
+#closeAutoMinerModal {
+    width: 270px !important;
+    margin: 15% auto !important;
+    padding: 32px !important;
+    border-radius: 25px;
+    background-color: rgb(255 127 0) !important;
+    color: #000 !important;
+}
+#youSure {
+    width: px !important;
+    margin: 15% auto !important;
+    padding: 20px !important;
+    background-color: rgb(255 0 0 / 50%) !important;
+    color: #000 !important;
+}
+
+#imSure {
+    width: 270px !important;
+    margin: 15% auto !important;
+    padding: 32px !important;
+    border-radius: 25px;
+    background-color: rgb(255 221 0) !important;
+    color: #000 !important;
+}
+
+#nope {
+    width: 270px !important;
+    margin: 15% auto !important;
+    padding: 32px !important;
+    border-radius: 25px;
+    background-color: rgb(85, 255, 0) !important;
+    color: #000 !important;
+}
         @keyframes pop {
     50% {
         transform: scale(1.1);
@@ -61,18 +151,18 @@
         </div>
     </div>
     <div id="buyUpgradeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
-        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+        <div id="modalPopupUpgrade" style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
             <h2>Upgrade Cost</h2>
             <p id="buyUpgradeMessage"></p>
-            <button onclick="closebuyUpgradeModal()">Close</button>
+            <button id="closebuyUpgradeModal"onclick="closebuyUpgradeModal()">Close</button>
         </div>
     </div>
 
     <div id="buyAutoMinerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
-        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+        <div id="modalPopupAutoUpgrade"style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
             <h2>Auto Miner Cost</h2>
             <p id="buyAutoMinerMessage"></p>
-            <button onclick="closeAutoMinerModal()">Close</button>
+            <button id="closeAutoMinerModal"onclick="closeAutoMinerModal()">Close</button>
         </div>
     </div>
 
@@ -86,11 +176,13 @@
     </div>
 
     <div id="ConfirmResetModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
-        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+        <div id="youSure"style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
             <h2>Are you sure?</h2>
             <p>Are you sure you want to reset all game data?</p>
-            <button onclick="actuallyResetAll()">Yes, Reset</button>
-            <button onclick="closeConfirmResetModal()">Cancel</button>
+            <p>This will RESET ALL!</p>
+            <p>I mean it!</p>
+            <button id="imSure" onclick="actuallyResetAll()">Yes, Reset</button>
+            <button id="nope" onclick="closeConfirmResetModal()">Cancel</button>
         </div>
     </div>
     
@@ -102,6 +194,23 @@
             <button onclick="closeDejaModal()">Close</button>
         </div>
     </div>
+<!-- HIght Score Alert Modal -->
+<div id="highScoreAlertModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+    <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+        <h2>Alert</h2>
+        <p id="highScoreAlertMessage"></p>
+        <button onclick="closeHighScoreAlertModal()">Close</button>
+    </div>
+</div>
+
+<!-- Name Input Modal -->
+<div id="nameInputModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+    <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+        <h2>Enter Your Name</h2>
+        <input type="text" id="playerNameInput" placeholder="Your Name">
+        <button onclick="submitPlayerName()">Submit</button>
+    </div>
+</div>
 
 
 
@@ -110,11 +219,24 @@
 
     <section>
         <button class="btn" id="clickButton" onclick="earnPoint()">
-            <img src="rock.png" alt="Click me for points!">
+            <div class="rock-image-container">
+                <img src="rock.png" alt="Click me for points!">
+            </div>
         </button>
-        <p>Points per click: <span id="pointsPerClick">0.11</span></p>
-        <p>Points: <span id="points">0</span></p>
+        
+        <div class="clickButtonInfo">
+            <p>Points per click: <span id="pointsPerClick">0.11</span></p>
+            <p>Points: <span id="points">0</span></p>
+            <p>Auto Miner Rate: <span id="autoMinerRate">0</span> points/sec</p>
+
+        </div>
+        <div class="highScores">
+            <h2>High Scores</h2>
+            <ul id="highScoresList"></ul>
+            <button class="btn" id="submitHighScoreBtn" onclick="submitHighScore()">Submit High Score</button>
+        </div>
     </section>
+    
 
     <section>
         <h2>Upgrades</h2>
@@ -126,15 +248,15 @@
 
     <section>
         <h2>Auto Miners</h2>
-        <button class="btn" onclick="buyAutoMiner(1, 300)">Buy Auto Miner 1 (300 points) - 0.0001 points/sec</button>
-        <button class="btn" onclick="buyAutoMiner(2, 400)">Buy Auto Miner 2 (400 points) - 0.0002 points/sec</button>
-        <button class="btn" onclick="buyAutoMiner(3, 500)">Buy Auto Miner 3 (500 points) - 0.0005 points/sec</button>
-        <button class="btn" onclick="buyAutoMiner(4, 1000)">Buy Auto Miner 4 (1000 points) - 0.001 points/sec</button>
+        <button class="btn" onclick="buyAutoMiner(1, 300)">Buy Auto Miner 1 (300 points) - 0.01 points/sec</button>
+        <button class="btn" onclick="buyAutoMiner(2, 400)">Buy Auto Miner 2 (400 points) - 0.02 points/sec</button>
+        <button class="btn" onclick="buyAutoMiner(3, 500)">Buy Auto Miner 3 (500 points) - 0.05 points/sec</button>
+        <button class="btn" onclick="buyAutoMiner(4, 1000)">Buy Auto Miner 4 (1000 points) - 0.09 points/sec</button>
     </section>
 
     <section>
         <h2>Settings</h2>
-        <button class="btn" onclick="resetAll()">Reset All</button>
+        <button class="btn" id="ResetButton" onclick="resetAll()">Reset All</button>
     </section>
 
 
@@ -146,19 +268,55 @@
     let points = parseFloat(localStorage.getItem('points') || 0);
     let autoMinerRate = parseFloat(localStorage.getItem('autoMinerRate') || 0);
     let pointsPerClick = parseFloat(localStorage.getItem('pointsPerClick') || 0.11);
-    const clickDelay = 500;
+    const clickDelay = 300;
+    const upgradePurchaseCounts = {
+    "upgrade1": 0,
+    "upgrade2": 0,
+    "upgrade3": 0,
+    "upgrade4": 0,
+    "autoMiner1": 0,
+    "autoMiner2": 0,
+    "autoMiner3": 0,
+    "autoMiner4": 0
+};
+
+const MAX_UPGRADES = {
+    "upgrade1": 50,
+    "upgrade2": 50,
+    "upgrade3": 50,
+    "upgrade4": 500,
+    "autoMiner1": 30,
+    "autoMiner2": 30,
+    "autoMiner3": 30,
+    "autoMiner4": 300
+};
+
+const upgrades = {
+    clickMultiplier: 0,
+    autoMinerUpgrade: 0,
+    // ... other upgrades
+};
+
+
+
+
+
+
     function earnPoint() {
-        points += pointsPerClick;
-        updateDisplay();
-        saveGameData();
-        
-        // Disable the button and re-enable it after a delay
-        const btn = document.getElementById('clickButton');
-        btn.disabled = true;
-        setTimeout(() => {
-            btn.disabled = false;
-        }, clickDelay);
-    }
+    points += pointsPerClick;
+    updateDisplay();
+    saveGameData();
+
+    // Disable the button and re-enable it after a delay
+    const btn = document.getElementById('clickButton');
+    btn.disabled = true;
+    btn.classList.add('clicked'); // Add the 'clicked' class
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.classList.remove('clicked'); // Remove the 'clicked' class after the delay
+    }, clickDelay);
+}
+
 
 // Update points using auto miner rate every second
 setInterval(() => {
@@ -167,12 +325,32 @@ setInterval(() => {
 }, 1000);
 
 function buyAutoMiner(minerNumber, cost) {
+    const minerKey = `miner${minerNumber}`;
+
+    if (upgradePurchaseCounts[minerKey] >= MAX_UPGRADES[minerKey]) {
+        showbuyAutoMinerModal(`Auto Miner ${minerNumber} has reached its max purchase limit!`);
+        return;
+    }
+
     if(points >= cost) {
         points -= cost;
-        if (minerNumber === 1) autoMinerRate += 0.0001;
-        else if (minerNumber === 2) autoMinerRate += 0.0002;
-        else if (minerNumber === 3) autoMinerRate += 0.0005;
-        else if (minerNumber === 4) autoMinerRate += 0.001;
+
+        switch (minerNumber) {
+            case 1:
+                autoMinerRate += 0.01;
+                break;
+            case 2:
+                autoMinerRate += 0.02;
+                break;
+            case 3:
+                autoMinerRate += 0.05;
+                break;
+            case 4:
+                autoMinerRate += 0.09;
+                break;
+        }
+
+        upgradePurchaseCounts[minerKey]++;
         updateDisplay();
     } else {
         showbuyAutoMinerModal(`You need more points to buy Auto Miner ${minerNumber}!`);
@@ -180,30 +358,61 @@ function buyAutoMiner(minerNumber, cost) {
     saveGameData();
 }
 
-    function buyUpgrade(upgradeNumber, cost) {
-        if(points >= cost) {
-            points -= cost;
-            if (upgradeNumber === 1) pointsPerClick += 0.1;
-            else if (upgradeNumber === 2) pointsPerClick += 0.2;
-            else if (upgradeNumber === 3) pointsPerClick += 0.4;
-            else if (upgradeNumber === 4) pointsPerClick += 0.11;
-            updateDisplay();
-        } else {
-            showbuyUpgradeModal(`You need more points to buy Upgrade ${upgradeNumber}!`);
-    
-        }
-        saveGameData();
+function buyUpgrade(upgradeNumber, cost) {
+    const upgradeKey = `upgrade${upgradeNumber}`;
+
+    if (upgradePurchaseCounts[upgradeKey] >= MAX_UPGRADES[upgradeKey]) {
+        showbuyUpgradeModal(`Upgrade ${upgradeNumber} has reached its max purchase limit!`);
+        return;
     }
-    function saveGameData() {
+
+    if(points >= cost) {
+        points -= cost;
+
+        switch (upgradeNumber) {
+            case 1:
+                pointsPerClick += 0.1;
+                break;
+            case 2:
+                pointsPerClick += 0.2;
+                break;
+            case 3:
+                pointsPerClick += 0.4;
+                break;
+            case 4:
+                pointsPerClick += 0.11;
+                break;
+        }
+
+        upgradePurchaseCounts[upgradeKey]++;
+        updateDisplay();
+    } else {
+        showbuyUpgradeModal(`You need more points to buy Upgrade ${upgradeNumber}!`);
+    }
+    saveGameData();
+}
+
+function saveGameData() {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('autoMinerRate', autoMinerRate.toString());
     localStorage.setItem('pointsPerClick', pointsPerClick.toString());
+    localStorage.setItem('upgradePurchaseCounts', JSON.stringify(upgradePurchaseCounts));
     localStorage.setItem('lastSaveTime', Date.now().toString());
 }
+
+// Load the game data when the game starts
+function loadGameData() {
+    const savedCounts = JSON.parse(localStorage.getItem('upgradePurchaseCounts') || '{}');
+    Object.assign(upgradePurchaseCounts, savedCounts);
+}
+
+
+
 
     function updateDisplay() {
         document.getElementById('points').textContent = points;
         document.getElementById('pointsPerClick').textContent = pointsPerClick;
+        document.getElementById('autoMinerRate').textContent = autoMinerRate.toFixed(2);
     }
 
 
@@ -221,7 +430,7 @@ function checkOfflineEarnings() {
     sessionStorage.removeItem('pageRefreshed'); // Clear the flag after checking it
 }
 
-
+// modal function section 
 function closeModal() {
     document.getElementById("offlineEarningsModal").style.display = "none";
 }
@@ -271,8 +480,31 @@ function closeConfirmResetModal() {
     document.getElementById("ConfirmResetModal").style.display = "none";
 }
 
+function closeNameInputModal() {
+    // Close the name input modal
+    document.getElementById("nameInputModal").style.display = "none";
+}
+
+function showHighScoreAlertModal(message) {
+    // Display an alert modal with the given message
+    document.getElementById("highScoreAlertMessage").textContent = message;
+    document.getElementById("highScoreAlertModal").style.display = "block";
+}
+
+function closeHighScoreAlertModal() {
+    // Close the alert modal
+    document.getElementById("highScoreAlertModal").style.display = "none";
+}
+
     // Save game data periodically
     setInterval(saveGameData, 10 * 1000); // every 10 seconds
+    // Update points using auto miner rate every second
+setInterval(() => {
+    const autoMinerEarnings = autoMinerRate; // Calculate auto miner earnings
+    points += autoMinerEarnings; // Add auto miner earnings to points
+    updateDisplay();
+}, 1000);
+
 
     window.addEventListener("beforeunload", function() {
     saveGameData();
@@ -282,6 +514,7 @@ function closeConfirmResetModal() {
 document.addEventListener('DOMContentLoaded', function() {
     checkOfflineEarnings();
     sessionStorage.removeItem('pageRefreshed'); // Clear the flag after checking it
+    updateHighScores();
 });
 document.getElementById('clickButton').addEventListener('click', function() {
     this.classList.add('pop-animation');
@@ -289,14 +522,95 @@ document.getElementById('clickButton').addEventListener('click', function() {
         this.classList.remove('pop-animation');
     }, 200); // This duration should match the animation duration specified in the CSS
 });
+function submitHighScore() {
+    openNameInputModal();
+}
+function openNameInputModal() {
+    // Display the name input modal
+    document.getElementById("nameInputModal").style.display = "block";
+}
+function updateHighScores() {
+    // Retrieve high scores from local storage
+    const highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
+
+    // Get the high scores list element
+    const highScoresList = document.getElementById("highScoresList");
+
+    // Clear the existing list
+    highScoresList.innerHTML = "";
+
+    // Populate the high scores list
+    highScores.forEach((score, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `${index + 1}. ${score.name}: ${score.score} points`;
+        highScoresList.appendChild(listItem);
+    });
+}
+function submitPlayerName() {
+    const playerName = document.getElementById("playerNameInput").value;
+
+    closeNameInputModal();
+    
+    if (playerName) {
+        const playerScore = parseFloat(localStorage.getItem('points') || 0);
+        
+        if (playerScore >= 1000) {
+            // Retrieve and parse the existing high scores
+            let highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
+            
+            // Add the new high score
+            highScores.push({ name: playerName, score: playerScore });
+            
+            // Sort high scores in descending order based on score
+            highScores.sort((a, b) => b.score - a.score);
+            
+            // Keep only the top 5 high scores
+            highScores = highScores.slice(0, 5);
+            
+            // Save the updated high scores
+            localStorage.setItem('highScores', JSON.stringify(highScores));
+
+            // Close the name input modal
+            closeNameInputModal();
+            
+            // Show a success message in an alert modal
+            showHighScoreAlertModal("High score submitted successfully!");
+            
+            // Update the displayed high scores
+            updateHighScores();
+        } else {
+            // Show an error message in an alert modal
+            showHighScoreAlertModal("Sorry, only scores greater than or equal to 1000 are accepted.");
+        }
+    } else {
+        // Show an error message in an alert modal if the player name is empty
+        showHighScoreAlertModal("Please enter your name.");
+    }
+}
 
 function actuallyResetAll() {
     // Your actual reset code
     points = 0;
+    localStorage.removeItem('highScores');
     pointsPerClick = 0.11;
     autoMinerRate = 0;
     updateDisplay();
     saveGameData();
+    updateHighScores();
+
+    // Reset the upgrades
+    upgrades.clickMultiplier = 0;
+    upgrades.autoMinerUpgrade = 0;
+    // ... reset other upgrades
+
+    // Reset the upgradePurchaseCounts
+    for (let key in upgradePurchaseCounts) {
+        upgradePurchaseCounts[key] = 0;
+    }
+
+    // Possibly remove upgrades and upgradePurchaseCounts from local storage if they're saved there
+    localStorage.removeItem('upgrades');
+    localStorage.removeItem('upgradePurchaseCounts');
 
     // Increment the reset counter
     resetCount += 1;
@@ -312,12 +626,16 @@ function actuallyResetAll() {
     closeConfirmResetModal(); // Close the confirmation modal
 }
 
-        // Initial call to load the display and check offline earnings when the page is first loaded
-        updateDisplay();
+
+
+
 
         function resetAll() {
     showConfirmResetModal();
 }
+        // Initial call to load the display and load game data when the page is first loaded
+        updateDisplay();
+        loadGameData();
 
 </script>
 
