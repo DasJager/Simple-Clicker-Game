@@ -1,6 +1,11 @@
 I was bored so I made an auto clicker to click the button for you! [AUTO CLICKER](https://github.com/DasJager/Simple-Clicker-Game/blob/main/AutoclickerScript.text)
 
 
+HOW TO USE!!!! 
+
+simply download the current file structure and launch the index that is all you have to do to play this simple clicker game if you wish to use the auto clicker I have included you have to use xampp or other apache service. 
+
+
 Simple Clicker 
 Embark on a journey of clicks and wealth in Simple Clicker! Start with a humble click for points and climb your way up to auto-mining empires. Unlock powerful upgrades, amass your riches, and let your automated miners do the work for you. But be warned: the more you play, the more you'll want to earn. Can you achieve the ultimate clicker status?
 
