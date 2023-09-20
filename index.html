@@ -19,7 +19,14 @@
     </style>
 </head>
 <body>
-
+    <div id="offlineEarningsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;">
+        <div style="width: 300px; margin: 15% auto; padding: 20px; background-color: #fff; color: #000;">
+            <h2>Offline Earnings</h2>
+            <p id="offlineEarningsMessage"></p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+    
 <h1>Simple Clicker Game</h1>
 <button class="btn" id="clickButton" onclick="earnPoint()">Click me for points!</button>
 <p>Points per click: <span id="pointsPerClick">0.11</span></p>
@@ -44,6 +51,7 @@
 
 
 <script>
+    let resetCount = parseInt(localStorage.getItem('resetCount') || 0);
     let points = parseFloat(localStorage.getItem('points') || 0);
     let autoMinerRate = parseFloat(localStorage.getItem('autoMinerRate') || 0);
     let pointsPerClick = parseFloat(localStorage.getItem('pointsPerClick') || 0.11);
@@ -75,6 +83,8 @@ function buyAutoMiner(minerNumber, cost) {
     saveGameData();
 }
 
+
+
 // Update points using auto miner rate every second
 setInterval(() => {
     points += autoMinerRate;
@@ -95,25 +105,79 @@ setInterval(() => {
         saveGameData();
     }
     function saveGameData() {
-        localStorage.setItem('points', points.toString());
-        localStorage.setItem('autoMinerRate', autoMinerRate.toString());
-        localStorage.setItem('pointsPerClick', pointsPerClick.toString());
-    }
+    localStorage.setItem('points', points.toString());
+    localStorage.setItem('autoMinerRate', autoMinerRate.toString());
+    localStorage.setItem('pointsPerClick', pointsPerClick.toString());
+    localStorage.setItem('lastSaveTime', Date.now().toString());
+}
+
     function updateDisplay() {
         document.getElementById('points').textContent = points;
         document.getElementById('pointsPerClick').textContent = pointsPerClick;
     }
-        // Initial call to load the display when the page is first loaded
+
+
+function checkOfflineEarnings() {
+    const lastSaveTime = parseInt(localStorage.getItem('lastSaveTime') || Date.now());
+    const currentTime = Date.now();
+    const timeDiffInSeconds = (currentTime - lastSaveTime) / 1000; // Convert milliseconds to seconds
+
+    if (timeDiffInSeconds > 0 && !sessionStorage.getItem('pageRefreshed')) {
+        const offlineEarnings = autoMinerRate * timeDiffInSeconds;
+        points += offlineEarnings;
+        const timeDiffInMinutes = Math.round(timeDiffInSeconds / 60);
+        showModal(`You were away for ${timeDiffInMinutes} minutes and have earned ${offlineEarnings.toFixed(2)} points!`);
+    }
+    sessionStorage.removeItem('pageRefreshed'); // Clear the flag after checking it
+}
+
+
+function closeModal() {
+    document.getElementById("offlineEarningsModal").style.display = "none";
+}
+function showModal(message) {
+    document.getElementById("offlineEarningsMessage").textContent = message;
+    document.getElementById("offlineEarningsModal").style.display = "block";
+}
+
+
+    // Save game data periodically
+    setInterval(saveGameData, 10 * 1000); // every 10 seconds
+
+    window.addEventListener("beforeunload", function() {
+    saveGameData();
+    sessionStorage.setItem('pageRefreshed', 'true');
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkOfflineEarnings();
+    sessionStorage.removeItem('pageRefreshed'); // Clear the flag after checking it
+});
+
+
+
+        // Initial call to load the display and check offline earnings when the page is first loaded
         updateDisplay();
+
         function resetAll() {
     points = 0;
     pointsPerClick = 0.11;
-    autoMinerRate = 0; // Stops the auto miner by setting its rate to 0
-    
+    autoMinerRate = 0;
     updateDisplay();
     saveGameData();
-    
-    alert("Everything has been reset!");
+
+
+
+    // Increment the reset counter
+    resetCount += 1;
+    localStorage.setItem('resetCount', resetCount.toString());
+
+    // Check for the Deja Vu achievement
+    if (resetCount === 5) {
+        alert('Achievement Unlocked: Deja Vu - You have reset the game five times!');
+    } else {
+        alert("Everything has been reset!");
+    }
 }
 </script>
 
