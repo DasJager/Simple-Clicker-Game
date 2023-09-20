@@ -325,6 +325,8 @@ setInterval(() => {
 }, 1000);
 
 function buyAutoMiner(minerNumber, cost) {
+    const button = event.target; // Get the button that triggered the event
+    applyPopAnimation(button);
     const minerKey = `miner${minerNumber}`;
 
     if (upgradePurchaseCounts[minerKey] >= MAX_UPGRADES[minerKey]) {
@@ -359,6 +361,8 @@ function buyAutoMiner(minerNumber, cost) {
 }
 
 function buyUpgrade(upgradeNumber, cost) {
+    const button = event.target; // Get the button that triggered the event
+    applyPopAnimation(button);
     const upgradeKey = `upgrade${upgradeNumber}`;
 
     if (upgradePurchaseCounts[upgradeKey] >= MAX_UPGRADES[upgradeKey]) {
@@ -546,6 +550,16 @@ function updateHighScores() {
         highScoresList.appendChild(listItem);
     });
 }
+
+function applyPopAnimation(element) {
+    element.classList.add('pop-animation');
+    
+    // Remove the animation class after it's completed
+    setTimeout(() => {
+        element.classList.remove('pop-animation');
+    }, 200); // 200ms matches the duration of the animation
+}
+
 function submitPlayerName() {
     const playerName = document.getElementById("playerNameInput").value;
 
