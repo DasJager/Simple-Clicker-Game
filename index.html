@@ -327,7 +327,8 @@ setInterval(() => {
 function buyAutoMiner(minerNumber, cost) {
     const button = event.target; // Get the button that triggered the event
     applyPopAnimation(button);
-    const minerKey = `miner${minerNumber}`;
+    const minerKey = `autoMiner${minerNumber}`;
+
 
     if (upgradePurchaseCounts[minerKey] >= MAX_UPGRADES[minerKey]) {
         showbuyAutoMinerModal(`Auto Miner ${minerNumber} has reached its max purchase limit!`);
